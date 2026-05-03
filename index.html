@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RETROBOARD</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="scanlines"></div>
+  <div class="crt-vignette"></div>
+
+  <header>
+    <div class="header-inner">
+      <div class="marquee-wrap">
+        <div class="marquee-track">
+          <span class="marquee-text">* COMPETE * HAVE FUN * TEST YOUR BRAIN * BEAT YOUR BEST * RISE UP THE BOARD * COMPETE * HAVE FUN * TEST YOUR BRAIN *</span>
+          <span class="marquee-text" aria-hidden="true">* COMPETE * HAVE FUN * TEST YOUR BRAIN * BEAT YOUR BEST * RISE UP THE BOARD * COMPETE * HAVE FUN * TEST YOUR BRAIN *</span>
+        </div>
+      </div>
+      <h1 class="game-title">RETRO<span class="title-accent">BOARD</span></h1>
+      <div class="header-stats">
+        <div class="stat-box" id="playerLabel">PLAYER: -</div>
+        <div class="stat-box" id="movesDisplay">MOVES: 0</div>
+        <div class="stat-box" id="timerDisplay">TIME: 0:00</div>
+        <div class="stat-box" id="scoreDisplay">POINTS: 0</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="panel left">
+      <button class="arcade-btn btn-green" id="restart">RESTART</button>
+      <button class="arcade-btn btn-yellow" id="changeDifficulty">CHANGE LEVEL</button>
+      <button class="arcade-btn btn-cyan" id="leaderboardBtn">HIGH SCORES</button>
+      <button class="arcade-btn btn-red" id="logoutBtn">LOG OUT</button>
+      <div class="panel-divider"></div>
+      <div class="mini-stat">
+        <span class="mini-label">CURRENT POINTS</span>
+        <span class="mini-val" id="currentScore">0</span>
+      </div>
+      <div class="mini-stat">
+        <span class="mini-label">CURRENT COMBO</span>
+        <span class="mini-val" id="currentCombo">x1</span>
+      </div>
+    </aside>
+
+    <main>
+      <div id="gameBoard" class="game-board"></div>
+      <div id="comboMsg" class="combo-msg"></div>
+    </main>
+
+    <aside class="panel right">
+      <div class="panel-title">INFO</div>
+      <div class="mini-stat">
+        <span class="mini-label">LEVEL</span>
+        <span class="mini-val" id="diffLabel">-</span>
+      </div>
+      <div class="mini-stat">
+        <span class="mini-label">PAIRS</span>
+        <span class="mini-val" id="pairsLeft">-</span>
+      </div>
+      <div class="sound-toggle">
+        <button class="arcade-btn btn-small" id="soundToggle">SFX ON</button>
+      </div>
+    </aside>
+  </div>
+
+  <footer>
+    <span class="footer-text"> RETROBOARD - MADE BY EA - ALL RIGHTS RESERVED</span>
+  </footer>
+
+  <div class="modal show" id="startModal">
+    <div class="modal-box">
+      <div class="modal-pixel-border">
+        <h2 class="modal-title">RETROBOARD</h2>
+
+        <div id="authPanel">
+          <div class="tabs auth-tabs">
+            <button class="tab active" id="showLoginBtn" type="button">LOG IN</button>
+            <button class="tab" id="showSignupBtn" type="button">SIGN UP</button>
+          </div>
+          <p class="modal-sub" id="authSubtitle">LOG IN TO YOUR ACCOUNT</p>
+          <input class="arcade-input" id="authUsername" placeholder="USERNAME" maxlength="12">
+          <input class="arcade-input auth-input-gap" id="authPassword" type="password" placeholder="PASSWORD" maxlength="24">
+          <input class="arcade-input auth-input-gap hidden" id="authConfirmPassword" type="password" placeholder="CONFIRM PASSWORD" maxlength="24">
+          <p class="input-error" id="authError"></p>
+          <button class="arcade-btn btn-green btn-big" id="authSubmitBtn">LOG IN</button>
+        </div>
+
+        <div id="setupPanel" class="hidden">
+          <p class="modal-sub">SIGNED IN AS</p>
+          <div class="auth-player-card" id="authPlayerCard">PLAYER: -</div>
+          <button class="arcade-btn btn-purple btn-small" id="switchAccountBtn" type="button">SWITCH ACCOUNT</button>
+          <p class="modal-sub" style="margin-top:16px;">SELECT DIFFICULTY</p>
+          <div class="diff-grid">
+            <button class="diff-btn start-diff active" data-diff="easy">
+              <span class="diff-label">EASY</span>
+              <span class="diff-sub">4x3 6 PAIRS</span>
+            </button>
+            <button class="diff-btn start-diff" data-diff="medium">
+              <span class="diff-label">MEDIUM</span>
+              <span class="diff-sub">4x4 8 PAIRS</span>
+            </button>
+            <button class="diff-btn start-diff" data-diff="hard">
+              <span class="diff-label">HARD</span>
+              <span class="diff-sub">5x4 10 PAIRS</span>
+            </button>
+            <button class="diff-btn start-diff" data-diff="insane">
+              <span class="diff-label">INSANE</span>
+              <span class="diff-sub">6x5 15 PAIRS</span>
+            </button>
+            <button class="diff-btn start-diff" data-diff="blitz">
+              <span class="diff-label">BLITZ</span>
+              <span class="diff-sub">4x4 8 PAIRS 22s</span>
+            </button>
+          </div>
+          <button class="arcade-btn btn-green btn-big" id="startGameBtn">PRESS START</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="levelModal">
+    <div class="modal-box">
+      <div class="modal-pixel-border">
+        <button class="modal-close" id="closeLevelModal" aria-label="Close level dialog">✕</button>
+        <h2 class="modal-title">CHANGE LEVEL</h2>
+        <p class="modal-sub">SELECT DIFFICULTY</p>
+        <div class="diff-grid">
+          <button class="diff-btn level-diff" data-diff="easy">
+            <span class="diff-label">EASY</span>
+            <span class="diff-sub">4x3 6 PAIRS</span>
+          </button>
+          <button class="diff-btn level-diff" data-diff="medium">
+            <span class="diff-label">MEDIUM</span>
+            <span class="diff-sub">4x4 8 PAIRS</span>
+          </button>
+          <button class="diff-btn level-diff" data-diff="hard">
+            <span class="diff-label">HARD</span>
+            <span class="diff-sub">5x4 10 PAIRS</span>
+          </button>
+          <button class="diff-btn level-diff" data-diff="insane">
+            <span class="diff-label">INSANE</span>
+            <span class="diff-sub">6x5 15 PAIRS</span>
+          </button>
+          <button class="diff-btn level-diff" data-diff="blitz">
+            <span class="diff-label">BLITZ</span>
+            <span class="diff-sub">4x4 8 PAIRS 22s</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="winModal">
+    <div class="modal-box">
+      <div class="modal-pixel-border win-border">
+        <div class="win-animation">
+          <h2 class="modal-title win-title">YOU WON!</h2>
+        </div>
+        <div id="finalStats" class="final-stats"></div>
+        <div class="modal-btns">
+          <button class="arcade-btn btn-green" id="playAgain">PLAY AGAIN</button>
+          <button class="arcade-btn btn-yellow" id="newDifficulty">CHANGE LEVEL</button>
+          <button class="arcade-btn btn-red" id="closeWin">CLOSE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="gameOverModal">
+    <div class="modal-box">
+      <div class="modal-pixel-border over-border">
+        <h2 class="modal-title over-title">GAME OVER</h2>
+        <p class="modal-sub">TIME ENDED</p>
+        <div id="overStats" class="final-stats"></div>
+        <div class="modal-btns">
+          <button class="arcade-btn btn-green" id="overPlayAgain">TRY AGAIN</button>
+          <button class="arcade-btn btn-red" id="closeOver">CLOSE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="leaderboardModal">
+    <div class="modal-box modal-wide">
+      <div class="modal-pixel-border">
+        <h2 class="modal-title">HIGH SCORES</h2>
+        <div class="tabs">
+          <button class="tab active" data-tab="easy">EASY</button>
+          <button class="tab" data-tab="medium">MED</button>
+          <button class="tab" data-tab="hard">HARD</button>
+          <button class="tab" data-tab="insane">INSANE</button>
+          <button class="tab" data-tab="blitz">BLITZ</button>
+          <button class="tab" data-tab="achievements">ACHIEVEMENTS</button>
+        </div>
+        <div id="leaderboardContent" class="lb-content"></div>
+        <button class="arcade-btn btn-red" id="closeLeaderboard">CLOSE</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
