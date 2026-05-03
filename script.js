@@ -88,6 +88,14 @@ function getAudio() {
   return audioCtx;
 }
 
+document.addEventListener('touchstart', () => {
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  } else if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+}, { once: true });
+
 function playTone(freq, type, duration, vol=0.15, delay=0) {
   if (!soundEnabled) return;
   try {
