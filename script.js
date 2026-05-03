@@ -72,6 +72,15 @@ async function apiRequest(url, options = {}) {
   });
 
   const data = await response.json().catch(() => ({}));
+  if (response.status === 401) {
+    player = '';
+    sessionToken = '';
+    setSessionUser('', '');
+    document.getElementById('startModal').classList.add('show');
+    showAuthPanel();
+    playerLabel.textContent = 'PLAYER: -';
+    throw new Error('SESSION EXPIRED - PLEASE LOG IN AGAIN');
+  }
   if (!response.ok) {
     throw new Error(data.error || 'SERVER ERROR');
   }
